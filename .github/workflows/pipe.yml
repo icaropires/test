@@ -1,0 +1,26 @@
+name: pipe
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Run a multi-line script
+        run: |
+          echo Add other actions to build,
+          echo test, and deploy your project.
+  release:
+    runs-on: ubuntu-latest
+    if:  github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    needs: build
+    steps:
+      - name: Test
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+
